@@ -1,0 +1,3 @@
+#pragma once
+
+enum class LoginResult { SUCCESS, INVALID_CREDENTIALS, USER_ALREADY_LOGGED, QUERY_ERROR };
