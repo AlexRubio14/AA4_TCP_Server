@@ -1,6 +1,6 @@
-#include <vector>
-#include "PacketManager.h"
 #include <unordered_map>
+#include <memory>
+#include <string>
 #include "Client.h"
 
 #define CLIENT_MANAGER ClientManager::Instance()
@@ -8,26 +8,28 @@
 
 class ClientManager {
 private:
-    std::unique_ptr<sf::TcpSocket> socket;
-
-    std::unordered_map<std::string,std::shared_ptr<Client>> authenticatedClients;
-	std::vector<std::shared_ptr<Client>> pendingClients; // Not logged
+   
 
     ClientManager() = default;
     ClientManager(const ClientManager&) = delete;
     ClientManager& operator=(const ClientManager&) = delete;
 
+    std::unordered_map<std::string, std::shared_ptr<Client>> authenticatedClientsByGuid;
+    std::unordered_map<uint32_t, std::shared_ptr<Client>> authenticatedClientsById;
+    std::unordered_map<std::string, std::shared_ptr<Client>> pendingClients; // Not logged
+
     int temporaryGuidCount = 1;
+    uint32_t nextClientId = 1;
 
 public:
 
     static ClientManager& Instance();
 
-    explicit ClientManager(std::unique_ptr<sf::TcpSocket> clientSocket);
+    std::shared_ptr<Client> CreatePendingClient();
 
-    Client& CreateClient();
+    std::string PromoteClientToAuthenticated(const std::string guid, const std::string username);
 
-    void DisconnectClient(std::string guid);
+    void EraseClient(std::string& guid);
 
     std::string CreateGuid(Client& client);
 
@@ -35,10 +37,9 @@ public:
 
     void UpdateClients(sf::SocketSelector& _socketSelector);
 
-    std::string PromoteClientToAuthenticated(const std::string guid, const std::string username);
     void InitAuthenticatedClient(Client& client, const std::string username);
 
     std::shared_ptr<Client> GetAuthoritedClientById(const std::string guid);
     bool CheckIfUserAlreadyLogged(const std::string& username) const;
-    std::shared_ptr<Client> GetPendingClientById(const std::string guid);
+    std::shared_ptr<Client> GetPendingClientByGuid(const std::string guid);
 };

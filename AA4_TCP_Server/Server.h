@@ -3,6 +3,8 @@
 #include <iostream>
 #include <memory>
 #include "ClientManager.h"
+#include "EventManager.h"
+#include "DatabaseManager.h"
 
 #define LISTENER_PORT 55001
 
@@ -29,5 +31,6 @@ public:
     void Update();
 
     void HandleNewConnection();
+    void HandleDisconnection(const std::string& guid);
 };
 
