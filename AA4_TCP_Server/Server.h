@@ -2,7 +2,7 @@
 #include <SFML/Network.hpp>
 #include <iostream>
 #include <memory>
-//#include "ClientManager.h"
+#include "ClientManager.h"
 
 #define LISTENER_PORT 55001
 
@@ -12,6 +12,11 @@ private:
     sf::SocketSelector socketSelector;
 
     bool isRunning;
+
+    ClientManager& clientManager;
+    PacketManager& packetManager;
+    EventManager& eventManager;
+    DatabaseManager& databaseManager;
 
 public:
 
