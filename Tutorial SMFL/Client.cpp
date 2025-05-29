@@ -29,6 +29,6 @@ void Client::HandleIncomingPackets()
 	}
 	else if (status == sf::Socket::Status::Disconnected)
 	{
-		EVENT_MANAGER.Emit(DISCONNECT, guid, customPacket);
+		EVENT_MANAGER.Emit(PacketType::DISCONNECT, guid, customPacket);
 	}
 }

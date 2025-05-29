@@ -44,7 +44,7 @@ void Room::CheckIfRoomFull(std::shared_ptr<Client> client)
 		CustomPacket customPacket;
 		std::cout << "Starting game" << std::endl;
 		isClosed = true;
-		EVENT_MANAGER.Emit(START_GAME, client.get()->GetGuid(), customPacket);
+		EVENT_MANAGER.Emit(PacketType::START_GAME, client.get()->GetGuid(), customPacket);
 	}
 
 	std::cout << "The size of the room is: " << clients.size() << std::endl;

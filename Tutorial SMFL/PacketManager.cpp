@@ -220,7 +220,7 @@ void PacketManager::Init()
 
 	EVENT_MANAGER.Subscribe(PacketType::ASK_MAP, [this](std::string guid, CustomPacket& customPacket) {
 
-		std::shared_ptr<Client> client = CLIENT_MANAGER.GetAuthoritedClientById(guid);
+		std::shared_ptr<Client> client = CLIENT_MANAGER.GetPendingClientByGuid(guid);
 
 		if (client)
 		{
@@ -230,7 +230,7 @@ void PacketManager::Init()
 			std::string jsonMap;
 			try {
 
-				std::ifstream mapFile("../Resources/map.json");
+				std::ifstream mapFile("../Resources/map1.json");
 				if (mapFile)
 				{
 					std::ostringstream buffer;
