@@ -5,9 +5,10 @@
 
 Server::Server()
     : clientManager(ClientManager::Instance()),
-    packetManager(PacketManager::Instance()),
     eventManager(EventManager::Instance()),
-    databaseManager(DatabaseManager::Instance())
+	databaseManager(DatabaseManager::Instance()),
+	matchmakingManager(DEDICATED_SERVER_IP, DEDICATED_SERVER_PORT),
+    packetManager(PacketManager::Instance())
 {
     isRunning = false;
 }
@@ -31,7 +32,7 @@ void Server::Start()
     databaseManager.ConnectDb();
 
 
-    eventManager.Subscribe(DISCONNECT, [this](std::string guid, CustomPacket& customPacket) {
+    eventManager.Subscribe(PacketType::DISCONNECT, [this](std::string guid, CustomPacket& customPacket) {
 
         HandleDisconnection(guid);
 
@@ -96,9 +97,6 @@ void Server::HandleDisconnection(const std::string& guid)
     clientManager.EraseClient(guid);
 
     std::cout << std::endl << std::endl << client->GetIsInRoom() << std::endl << std::endl;
-
-    /*if (client->GetIsInRoom())
-        ROOM_MANAGER.LeaveRoom(client->GetCurrentRoomId(), client);*/
 }
 
 Server::~Server()

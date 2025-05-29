@@ -5,8 +5,11 @@
 #include "ClientManager.h"
 #include "EventManager.h"
 #include "DatabaseManager.h"
+#include "MatchMakingManager.h"
 
 #define LISTENER_PORT 55001
+const sf::IpAddress DEDICATED_SERVER_IP = sf::IpAddress(192, 168, 1, 144);
+const int DEDICATED_SERVER_PORT = 55001;
 
 class Server {
 private:
@@ -16,9 +19,10 @@ private:
     bool isRunning;
 
     ClientManager& clientManager;
-    PacketManager& packetManager;
     EventManager& eventManager;
     DatabaseManager& databaseManager;
+    PacketManager& packetManager;
+    MatchMakingManager matchmakingManager;
 
 public:
 

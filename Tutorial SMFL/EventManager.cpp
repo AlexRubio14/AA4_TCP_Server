@@ -19,7 +19,7 @@ void EventManager::Emit(const PacketType type, std::string _guid, CustomPacket c
     }
     else
     {
-        std::cerr << "The event: " << type << " does not exists" << std::endl;
+        std::cerr << "The event: " << static_cast<int>(type) << " does not exists" << std::endl;
     }
 }
 
