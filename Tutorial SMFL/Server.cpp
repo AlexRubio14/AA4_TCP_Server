@@ -11,6 +11,7 @@ Server::Server()
     packetManager(PacketManager::Instance())
 {
     isRunning = false;
+    packetManager.SetMatchMakingManager(matchmakingManager);
 }
 
 void Server::Start()

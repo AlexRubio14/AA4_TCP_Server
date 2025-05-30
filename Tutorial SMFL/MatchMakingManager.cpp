@@ -4,7 +4,9 @@
 #include "EventManager.h"
 
 MatchMakingManager::MatchMakingManager(sf::IpAddress DEDICATED_SERVER_IP, int DEDICATED_SERVER_PORT)
-	: dedicatedServerIP(DEDICATED_SERVER_IP), dedicatedServerPort(DEDICATED_SERVER_PORT) {}
+	: dedicatedServerIP(DEDICATED_SERVER_IP), dedicatedServerPort(DEDICATED_SERVER_PORT) 
+{
+}
 
 void MatchMakingManager::EnqueuePlayer(const std::shared_ptr<Client>& client)
 {
@@ -20,7 +22,10 @@ bool MatchMakingManager::DequeuePlayer(const std::shared_ptr<Client>& client)
 	{
 		matchmakingQueue.erase(it);
 		std::cout << "Client " << client->GetUsername() << " has been removed from the matchmaking queue." << std::endl;
+		return true;
 	}
+
+	return false;
 }
 
 void MatchMakingManager::ProcessMatches()

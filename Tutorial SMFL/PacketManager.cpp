@@ -179,11 +179,10 @@ void PacketManager::Init()
 		std::shared_ptr<Client> client = CLIENT_MANAGER.GetAuthoritedClientById(guid);
 		if (client)
 		{
-			CustomPacket responsePacket(PacketType::START_QUEUE);
-			responsePacket.packet << "You have been added to the matchmaking queue";
-
 			// Enqueue the player in the matchmaking queue
 			matchmakingManager->EnqueuePlayer(client);
+			CustomPacket responsePacket(PacketType::START_QUEUE_RESULT);
+			responsePacket.packet << "You have entered in queue";
 			SendPacketToClient(client, responsePacket);
 		}
 	});
@@ -196,13 +195,12 @@ void PacketManager::Init()
 			std::cout << "Client " << client->GetUsername() << " has canceled the queue" << std::endl;
 			// You can send a response back to the client if needed
 			bool result = matchmakingManager->DequeuePlayer(client);
+			CustomPacket responsePacket(PacketType::CANCEL_QUEUE_RESULT);
 
-			CustomPacket responsePacket(PacketType::CANCEL_QUEUE);
-
-			if (result == false)
-				responsePacket.packet << "Queue cancelation failed: Client not found in queue";
+			if (result)
+				responsePacket.packet << "You have canceled the queue succesfully";
 			else
-				responsePacket.packet << "Queue canceled successfully";
+				responsePacket.packet << "You do not have canceled the queue succesfully";
 
 			SendPacketToClient(client, responsePacket);
 		}

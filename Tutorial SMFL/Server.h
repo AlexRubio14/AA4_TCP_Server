@@ -8,7 +8,8 @@
 #include "MatchMakingManager.h"
 
 #define LISTENER_PORT 55001
-const sf::IpAddress DEDICATED_SERVER_IP = sf::IpAddress(192, 168, 1, 144);
+//const sf::IpAddress DEDICATED_SERVER_IP = sf::IpAddress(192, 168, 1, 144);
+const sf::IpAddress DEDICATED_SERVER_IP = sf::IpAddress(10, 40, 1, 99);
 const int DEDICATED_SERVER_PORT = 55001;
 
 class Server {

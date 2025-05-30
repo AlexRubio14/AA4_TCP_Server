@@ -1,8 +1,7 @@
 #pragma once
-#include <deque>
 #include "Client.h"
 #include <memory>
-
+#include <deque>
 class MatchMakingManager
 {
 private:
