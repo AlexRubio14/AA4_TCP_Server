@@ -212,7 +212,7 @@ void PacketManager::Init()
 		{
 			// Here you would handle the logic for starting a game
 			std::cout << "Client " << client->GetUsername() << " has started a game." << std::endl;
-			// You can send a response back to the client if needed
+			SendPacketToClient(client, customPacket);
 		}
 	});
 
