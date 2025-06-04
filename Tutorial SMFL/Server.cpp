@@ -7,8 +7,9 @@ Server::Server()
     : clientManager(ClientManager::Instance()),
     eventManager(EventManager::Instance()),
 	databaseManager(DatabaseManager::Instance()),
-	matchmakingManager(DEDICATED_SERVER_IP, DEDICATED_SERVER_PORT),
-    packetManager(PacketManager::Instance())
+    packetManager(PacketManager::Instance()),
+	udpSocket(std::make_shared<sf::UdpSocket>()),
+	matchmakingManager(DEDICATED_SERVER_IP_LOCAL, DEDICATED_SERVER_IP_PUBLIC, DEDICATED_SERVER_PORT, udpSocket)
 {
     isRunning = false;
     packetManager.SetMatchMakingManager(matchmakingManager);
@@ -96,8 +97,6 @@ void Server::HandleDisconnection(const std::string& guid)
         std::cerr << "Trying to disconnect non-existing client ( guid = " << guid << ")" << std::endl;
 
     clientManager.EraseClient(guid);
-
-    std::cout << std::endl << std::endl << client->GetIsInRoom() << std::endl << std::endl;
 }
 
 Server::~Server()

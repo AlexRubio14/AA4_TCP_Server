@@ -64,6 +64,11 @@ std::string ClientManager::CreateTemporaryGuid()
 	return guid;
 }
 
+int ClientManager::TakeNextClientId()
+{
+	return nextClientId++;
+}
+
 void ClientManager::UpdateClients(sf::SocketSelector& _socketSelector)
 {
 	for (auto& [id, client] : pendingClients)

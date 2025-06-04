@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "x64\\Release\\ClientState.h.obj",
+            "outputs": [
+                "C:\\Users\\alexr\\OneDrive\\Desktop\\AA4_TCP_Server\\Tutorial SMFL\\x64\\Release\\vc143.pdb",
+                "x64\\Release\\",
+                "C:\\Users\\alexr\\OneDrive\\Desktop\\AA4_TCP_Server\\Tutorial SMFL\\x64\\Release\\ClientState.h.ifc"
+            ],
+            "provides": [
+                {
+                    "logical-name": "ClientState.h",
+                    "source-path": "c:\\users\\alexr\\onedrive\\desktop\\aa4_tcp_server\\tutorial smfl\\clientstate.h",
+                    "lookup-method": "absolute"
+                }
+            ],
+            "requires": []
+        }
+    ]
+}

@@ -104,14 +104,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Dependencies\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Dependencies\include;$(SolutionDir)\Dependencies\include\mysqlConnector\include\jdbc;$(SolutionDir)\Dependencies\include\bcrypt\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Dependencies\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-audio-d.lib;sfml-network-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Dependencies\lib;$(SolutionDir)\Dependencies\include\mysqlConnector\lib64\vs14;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>mysqlcppconn-static.lib;sfml-graphics.lib;sfml-window.lib;sfml-audio.lib;sfml-network.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -123,7 +123,7 @@
       <PreprocessorDefinitions>STATIC_CONCPP;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\Dependencies\include;$(SolutionDir)\Dependencies\include\mysqlConnector\include\jdbc;$(SolutionDir)\Dependencies\include\bcrypt\include</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,6 +141,7 @@
     <ClCompile Include="ClientManager.cpp" />
     <ClCompile Include="ClientState.h" />
     <ClCompile Include="CustomPacket.cpp" />
+    <ClCompile Include="CustomUDPPacket.cpp" />
     <ClCompile Include="DatabaseManager.cpp" />
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="Client.h" />
     <ClInclude Include="ClientManager.h" />
     <ClInclude Include="CustomPacket.h" />
+    <ClInclude Include="CustomUDPPacket.h" />
     <ClInclude Include="DatabaseManager.h" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="MatchMakingManager.h" />
@@ -166,6 +168,7 @@
     <ClInclude Include="RoomManager.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="SHA256.h" />
+    <ClInclude Include="UdpPacketType.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PacketType.h" />

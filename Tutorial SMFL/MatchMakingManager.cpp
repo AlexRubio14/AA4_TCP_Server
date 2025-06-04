@@ -2,11 +2,11 @@
 #include <iostream>
 #include "PacketManager.h"
 #include "EventManager.h"
+#include "ClientManager.h"
+#include "CustomUDPPacket.h"
 
-MatchMakingManager::MatchMakingManager(sf::IpAddress DEDICATED_SERVER_IP, int DEDICATED_SERVER_PORT)
-	: dedicatedServerIP(DEDICATED_SERVER_IP), dedicatedServerPort(DEDICATED_SERVER_PORT) 
-{
-}
+MatchMakingManager::MatchMakingManager(sf::IpAddress DEDICATED_SERVER_IP_LOCAL, sf::IpAddress DEDICATED_SERVER_IP_PUBLIC, int DEDICATED_SERVER_PORT, std::shared_ptr<sf::UdpSocket> udpSocket)
+	: dedicatedServerIpLocal(DEDICATED_SERVER_IP_LOCAL), dedicatedServerIpPublic(DEDICATED_SERVER_IP_PUBLIC), dedicatedServerPort(DEDICATED_SERVER_PORT), udpSocket(udpSocket) { }
 
 void MatchMakingManager::EnqueuePlayer(const std::shared_ptr<Client>& client)
 {
@@ -44,13 +44,51 @@ void MatchMakingManager::ProcessMatches()
 		std::shared_ptr<Client> player2 = matchmakingQueue.front();
 		matchmakingQueue.pop_front();
 
+		player1->SetGameId(CLIENT_MANAGER.TakeNextClientId());
+		player2->SetGameId(CLIENT_MANAGER.TakeNextClientId());
+
 		std::cout << "Match formed between " << player1->GetUsername() << " and " << player2->GetUsername() << std::endl;
 
-		//TODO: send to dedicated server the info of this 2 players
+		SendMatchFoundToClient(player1, player2->GetGameId());
+		SendMatchFoundToClient(player2, player1->GetGameId());
 
-		CustomPacket responsePacket(PacketType::START_GAME);
-		responsePacket.packet << dedicatedServerIP.toString() << dedicatedServerPort;
-		EVENT_MANAGER.Emit(PacketType::START_GAME, player1->GetGuid(), responsePacket);
-		EVENT_MANAGER.Emit(PacketType::START_GAME, player2->GetGuid(), responsePacket);
+		SendMatchFoundToUdpServer(player1, player2);
 	}
+}
+
+// Data send to clients to know their gameID and connect to udpServer
+void MatchMakingManager::SendMatchFoundToClient(const std::shared_ptr<Client>& player, int enemyId)
+{
+	CustomPacket responsePacketPlayer1(PacketType::MATCH_FOUND);
+	responsePacketPlayer1.packet << player->GetGameId() << enemyId << dedicatedServerIpPublic.toString() << dedicatedServerPort;
+	PACKET_MANAGER.SendPacketToClient(player, responsePacketPlayer1);
+}
+
+// Data send to udp server with ip and port of players
+void MatchMakingManager::SendMatchFoundToUdpServer(const std::shared_ptr<Client>& player1, const std::shared_ptr<Client>& player2)
+{
+	CustomUDPPacket matchPacket(UdpPacketType::NORMAL, MATCH_FOUND, 0);
+
+	// Write player 1 data
+	std::string player1Ip = player1->GetSocket().getRemoteAddress()->toString();
+
+	if (!matchPacket.WriteVariable(player1->GetGameId()))
+	{
+		std::cout << "No se ha podido escribir: " << player1->GetGameId() << std::endl;
+	}
+
+	//Write player 2 data
+	std::string player2Ip = player2->GetSocket().getRemoteAddress()->toString();
+
+	if (!matchPacket.WriteVariable(player2->GetGameId()))
+	{
+		std::cout << "No se ha podido escribir player2id: " << player2->GetGameId() << std::endl;
+	}
+
+	std::cout << " el paquete es del tipo" << static_cast<int>(matchPacket.type) << std::endl;
+
+	if (udpSocket->send(matchPacket.buffer, matchPacket.bufferSize, dedicatedServerIpLocal, dedicatedServerPort) == sf::Socket::Status::Done)
+		std::cout << "Match data sent to UDP server for players: " << player1->GetUsername() << " and " << player2->GetUsername() << std::endl;
+	else
+		std::cerr << "Failed to send match data to UDP server." << std::endl;
 }
