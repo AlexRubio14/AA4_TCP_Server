@@ -13,9 +13,7 @@ private:
 	int port;
 	ClientState clientState;
 
-	bool isInRoom;
-	std::string currentRoomId;
-
+	int gameId;
 public:
 
 	Client();
@@ -27,14 +25,12 @@ public:
 	inline std::string GetUsername() const { return username; } 
 	inline sf::TcpSocket& GetSocket() { return *socket; }
 	inline int GetPort() const { return port; }
-	inline bool GetIsInRoom() const { return isInRoom; }
-	inline std::string GetCurrentRoomId() const { return currentRoomId; }
+	inline int GetGameId() const { return gameId; }
 
 	inline void SetGuid(const std::string _guid) { guid = _guid; }
 	inline void SetUsername(const std::string& _username) { username = _username; }
 	inline void SetPort(const int portValue) { port = portValue; }
 	inline void SetState(const ClientState _clientState) { clientState = _clientState; }
-	inline void SetIsInRoom(const bool value) { isInRoom = value; }
-	inline void SetCurrentRoomId(const std::string _roomId) { currentRoomId = _roomId; }
+	inline void SetGameId(const int _gameId) { gameId = _gameId; }
 };
 

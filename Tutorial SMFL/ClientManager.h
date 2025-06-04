@@ -15,11 +15,10 @@ private:
     ClientManager& operator=(const ClientManager&) = delete;
 
     std::unordered_map<std::string, std::shared_ptr<Client>> authenticatedClientsByGuid;
-    std::unordered_map<uint32_t, std::shared_ptr<Client>> authenticatedClientsById;
     std::unordered_map<std::string, std::shared_ptr<Client>> pendingClients; // Not logged
 
     int temporaryGuidCount = 1;
-    uint32_t nextClientId = 1;
+    int nextClientId = 1;
 
 public:
 
@@ -34,6 +33,7 @@ public:
     std::string CreateGuid(Client& client);
 
     std::string CreateTemporaryGuid();
+    int TakeNextClientId();
 
     void UpdateClients(sf::SocketSelector& _socketSelector);
 

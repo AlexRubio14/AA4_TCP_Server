@@ -206,16 +206,6 @@ void PacketManager::Init()
 		}
 	});
 
-	EVENT_MANAGER.Subscribe(PacketType::START_GAME, [this](std::string guid, CustomPacket& customPacket) {
-		std::shared_ptr<Client> client = CLIENT_MANAGER.GetAuthoritedClientById(guid);
-		if (client)
-		{
-			// Here you would handle the logic for starting a game
-			std::cout << "Client " << client->GetUsername() << " has started a game." << std::endl;
-			SendPacketToClient(client, customPacket);
-		}
-	});
-
 	EVENT_MANAGER.Subscribe(PacketType::ASK_MAP, [this](std::string guid, CustomPacket& customPacket) {
 
 		std::shared_ptr<Client> client = CLIENT_MANAGER.GetPendingClientByGuid(guid);
